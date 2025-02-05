@@ -15,7 +15,7 @@ export class Logger {
 		this.log.setLevel(config?.level || "info");
 		prefix.reg(loglevel);
 		prefix.apply(this.log, {
-			template: "%n",
+			template: "[%t] %l: %n",
 		});
 
 		for (const method of Object.keys(this.log)) {
