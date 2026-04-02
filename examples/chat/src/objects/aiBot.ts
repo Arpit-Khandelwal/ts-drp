@@ -1,18 +1,23 @@
 import { Chat } from "./chat";
-import { Configuration, OpenAIApi } from "openai";
+import { OpenAI } from "openai";
 
-export class AIBot extends Chat {
-  private openai: OpenAIApi;
+export class AIBot extends Chat
+{
 
-  constructor() {
+  private openai: OpenAI;
+
+  constructor()
+  {
     super();
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
+    this.openai = new OpenAI({
+      apiKey: "XEPPT9-ntBV6A9f_eYzvD7wiKly_LzD5l1jaJQ6hS8",
+      baseURL: "https://api.venice.ai/api/v1",
     });
-    this.openai = new OpenAIApi(configuration);
   }
 
-  generateMessage(): string {
+
+  generateMessage(): string
+  {
     const messages = [
       "Hello everyone!",
       "How's it going?",
@@ -24,16 +29,17 @@ export class AIBot extends Chat {
     return messages[randomIndex];
   }
 
-  async fetchResponseFromAPI(): Promise<string> {
-    const response = await this.openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: "Generate a chat message",
-      max_tokens: 50,
+  async fetchResponseFromAPI(): Promise<string>
+  {
+    const response = await this.openai.completions.create({
+      model: "dolphin-2.9.2-qwen2-72b",
+      prompt: this.generateMessage(),
     });
-    return response.data.choices[0].text.trim();
+    return response.choices[0].text;
   }
 
-  async sendMessage(): Promise<void> {
+  async sendMessage(): Promise<void>
+  {
     const timestamp: string = Date.now().toString();
     const message: string = await this.fetchResponseFromAPI();
     const senderId: string = "AI_Bot";

@@ -91,7 +91,10 @@ async function main() {
 		// Instantiate and add AI bot to the chat room
 		aiBot = new AIBot();
 		setInterval(async () => {
-			await aiBot.sendMessage();
+			console.log("Sending message from AI bot");
+
+			const repsonse = await aiBot.fetchResponseFromAPI();
+			await sendMessage(repsonse);
 			render();
 		}, 5000); // AI bot sends messages every 5 seconds
 	});
@@ -113,7 +116,8 @@ async function main() {
 		// Instantiate and add AI bot to the chat room
 		aiBot = new AIBot();
 		setInterval(async () => {
-			await aiBot.sendMessage();
+			const response = await aiBot.fetchResponseFromAPI();
+			await sendMessage(response);
 			render();
 		}, 5000); // AI bot sends messages every 5 seconds
 	});
